@@ -4,10 +4,9 @@ using UnityEngine.UI;
 using System;
 
 [Serializable]
-public class LaserOuMira
+public class Mira
 {
-    public bool ativarLaser = false;
-    public Color corLaser = Color.red;
+    public Color corMira = Color.white;
     public bool AtivarMiraComum = true;
 }
 
@@ -16,7 +15,6 @@ public class Arma919
 {
     [HideInInspector]
     public int balasExtra, balasNoPente;
-    //
     public int danoPorTiro = 40;
     [Range(65, 500)]
     public int numeroDeBalas = 240;
@@ -27,7 +25,7 @@ public class Arma919
     [Range(0.01f, 5.0f)]
     public float tempoDaRecarga = 0.5f;
     [Space(10)]
-    public LaserOuMira Miras;
+    public Mira Miras;
     [Space(10)]
     public GameObject objetoArma;
     public GameObject lugarParticula;
@@ -44,7 +42,6 @@ public class Atirar : MonoBehaviour
     public Text BalasPente, BalasExtra;
     public Material MaterialLasers;
     public Arma919[] armas;
-    //
     int armaAtual;
     AudioSource emissorSom;
     bool recarregando, atirando;
@@ -55,19 +52,7 @@ public class Atirar : MonoBehaviour
 
     void Start()
     {
-        //laser das armas
-        luzColisao = new GameObject();
-        luzColisao.AddComponent<Light>();
-        luzColisao.GetComponent<Light>().intensity = 8;
-        luzColisao.GetComponent<Light>().bounceIntensity = 8;
-        luzColisao.GetComponent<Light>().range = 0.2f;
-        luzColisao.GetComponent<Light>().color = Color.red;
-        LineRenderer lineRenderer = gameObject.AddComponent<LineRenderer>();
-        lineRenderer.material = MaterialLasers;
-        lineRenderer.SetColors(Color.white, Color.white);
-        lineRenderer.SetWidth(0.015f, 0.05f);
-        lineRenderer.SetVertexCount(2);
-        linhaDoLaser = GetComponent<LineRenderer>();
+  
         anim = GetComponent<Animator>();
         //
         for (int x = 0; x < armas.Length; x++)
@@ -76,7 +61,8 @@ public class Atirar : MonoBehaviour
             armas[x].lugarParticula.SetActive(false);
             armas[x].balasExtra = armas[x].numeroDeBalas - armas[x].balasPorPente;
             armas[x].balasNoPente = armas[x].balasPorPente;
-            armas[x].Miras.corLaser.a = 1;
+            armas[x].Miras.corMira.a = 1;
+
         }
         if (armaInicial > armas.Length - 1)
         {
@@ -167,36 +153,7 @@ public class Atirar : MonoBehaviour
             StartCoroutine(TempoRecarga(armas[armaAtual].tempoDaRecarga));
         }
 
-        //laser da arma
-        if (recarregando == false)
-        {
-            if (armas[armaAtual].Miras.ativarLaser == true)
-            {
-                linhaDoLaser.enabled = true;
-                linhaDoLaser.material.SetColor("_TintColor", armas[armaAtual].Miras.corLaser);
-                luzColisao.SetActive(true);
-                Vector3 PontoFinalDoLaser = transform.position + (transform.forward * 500);
-                RaycastHit hitDoLaser;
-                if (Physics.Raycast(transform.position, transform.forward, out hitDoLaser, 500))
-                {
-                    linhaDoLaser.SetPosition(0, armas[armaAtual].lugarParticula.transform.position);
-                    linhaDoLaser.SetPosition(1, hitDoLaser.point);
-                    float distancia = Vector3.Distance(transform.position, hitDoLaser.point) - 0.03f;
-                    luzColisao.transform.position = transform.position + transform.forward * distancia;
-                }
-                else
-                {
-                    linhaDoLaser.SetPosition(0, armas[armaAtual].lugarParticula.transform.position);
-                    linhaDoLaser.SetPosition(1, PontoFinalDoLaser);
-                    luzColisao.transform.position = PontoFinalDoLaser;
-                }
-            }
-        }
-        else
-        {
-            linhaDoLaser.enabled = false;
-            luzColisao.SetActive(false);
-        }
+     
         //checar limites da municao
         if (armas[armaAtual].balasNoPente > armas[armaAtual].balasPorPente)
         {
@@ -238,7 +195,7 @@ public class Atirar : MonoBehaviour
         }
         armas[armaAtual].objetoArma.SetActive(true);
         armas[armaAtual].lugarParticula.SetActive(true);
-        if (armas[armaAtual].Miras.ativarLaser == true)
+      /*  if (armas[armaAtual].Miras.ativarLaser == true)
         {
             linhaDoLaser.material.color = armas[armaAtual].Miras.corLaser;
             linhaDoLaser.enabled = true;
@@ -246,10 +203,10 @@ public class Atirar : MonoBehaviour
             luzColisao.GetComponent<Light>().color = armas[armaAtual].Miras.corLaser;
         }
         else
-        {
+        {*/
             linhaDoLaser.enabled = false;
             luzColisao.SetActive(false);
-        }
+       // }
     }
 
     void OnGUI()
@@ -259,6 +216,7 @@ public class Atirar : MonoBehaviour
             GUIStyle stylez = new GUIStyle();
             stylez.alignment = TextAnchor.MiddleCenter;
             GUI.skin.label.fontSize = 20;
+            GUI.contentColor = armas[armaAtual].Miras.corMira;
             GUI.Label(new Rect(Screen.width / 2 - 6, Screen.height / 2 - 12, 12, 22), "+");
         }
     }

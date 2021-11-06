@@ -29,8 +29,7 @@ public class Inimigo : MonoBehaviour
         
         if (Vector3.Distance(transform.position, player.transform.position) < 1.5f)
         {
-          
-            Atacar();
+             Atacar();
         }
         else
         {
@@ -80,8 +79,12 @@ public class Inimigo : MonoBehaviour
 
     IEnumerator Morrer()
     {
+        Debug.Log("Matando no inimigo");
+        Controlador.gm.matarZombie();
         anim.SetBool("morto", true);
         yield return new WaitForSeconds(20);
+       
+      
         Destroy(gameObject);
     }
 

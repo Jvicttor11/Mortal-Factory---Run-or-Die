@@ -22,9 +22,9 @@ public class FPSController : MonoBehaviour {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         transform.tag = "Player";
-        cameraFPS = transform.gameObject;        
-        cameraFPS.transform.localPosition = new Vector3 (0, 1, 0);
-        cameraFPS.transform.localRotation = Quaternion.identity;
+        cameraFPS = transform.gameObject;      
+        //cameraFPS.transform.localPosition = new Vector3 (9.25f, 0.1f, 17);
+       cameraFPS.transform.localRotation = Quaternion.identity;
         controller = GetComponent<CharacterController> ();
   
     }
@@ -37,12 +37,12 @@ public class FPSController : MonoBehaviour {
             Vida.text = "Vida: " + vida + " Você Morreu... ";
 
         Vector3 direcaoFrente = new Vector3 (cameraFPS.transform.forward.x, 0, cameraFPS.transform.forward.z);
- Vector3 direcaoLado = new Vector3 (cameraFPS.transform.right.x, 0, cameraFPS.transform.right.z);
- direcaoFrente.Normalize ();
- direcaoLado.Normalize ();
- direcaoFrente = direcaoFrente * Input.GetAxis ("Vertical");
- direcaoLado = direcaoLado * Input.GetAxis ("Horizontal");
- Vector3 direcFinal = direcaoFrente + direcaoLado;
+        Vector3 direcaoLado = new Vector3 (cameraFPS.transform.right.x, 0, cameraFPS.transform.right.z);
+        direcaoFrente.Normalize ();
+        direcaoLado.Normalize ();
+        direcaoFrente = direcaoFrente * Input.GetAxis ("Vertical");
+        direcaoLado = direcaoLado * Input.GetAxis ("Horizontal");
+        Vector3 direcFinal = direcaoFrente + direcaoLado;
         if (direcFinal.sqrMagnitude > 1) {
             if(!AudioAndar.isPlaying)
             AudioAndar.Play();
