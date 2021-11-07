@@ -13,10 +13,12 @@ public class Inimigo : MonoBehaviour
     private GameObject player;
     private NavMeshAgent navMesh;
     public string TagInimigo = "Player";
+    public AudioSource AudioSofrerDano;
+    public AudioSource AudioParado;
 
     private void Start()
     {
-        
+        AudioSofrerDano.Play();
         podeAtacar = true;
         player = GameObject.FindWithTag("Player");
         navMesh = GetComponent<NavMeshAgent>();
@@ -77,6 +79,16 @@ public class Inimigo : MonoBehaviour
         }
     }
 
+
+    public void SofrerDano(int dano)
+    {
+        Debug.Log("Atingido");
+        AudioSofrerDano.Play();
+        this.vida -= dano;
+    }
+
+
+
     IEnumerator Morrer()
     {
         Debug.Log("Matando no inimigo");
@@ -94,7 +106,7 @@ public class Inimigo : MonoBehaviour
 
         if (Vector3.Distance(transform.position, player.transform.position) < 10f && vida > 0)
         {
-            player.GetComponent<FPSController>().vida -= 5;
+            player.GetComponent<FPSController>().dano(5);
 
         }
         

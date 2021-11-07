@@ -17,8 +17,6 @@ public class FPSController : MonoBehaviour {
     public AudioSource AudioPular;
     public AudioSource AudioDano;
 
-    private bool sofrendoDano = false;
-
     public Text Vida;
 
     void Start () {
@@ -70,25 +68,12 @@ public class FPSController : MonoBehaviour {
         CameraPrimeiraPessoa ();
  }
 
-    public void dano(int dano){
-        if (!sofrendoDano)
-        {
-            sofrendoDano = true;
-            AudioDano.Play();
-            Aguardar(2);
-            sofrendoDano = false;
-        }
-        
-        vida -= dano;
+    public float dano(int dano){
+        AudioDano.Play();
+        return vida -= dano;
     }
 
-    IEnumerator Aguardar(float tempoAEsperar)
-    {
-        yield return new WaitForSeconds(tempoAEsperar);
-      
-    }
-
-    void CameraPrimeiraPessoa(){
+ void CameraPrimeiraPessoa(){
  rotacaoX += Input.GetAxis ("Mouse X") * 10.0f;
  rotacaoY += Input.GetAxis ("Mouse Y") * 10.0f;
  rotacaoX = ClampAngleFPS (rotacaoX, -360, 360);

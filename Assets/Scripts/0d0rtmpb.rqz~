@@ -34,10 +34,6 @@ public class Controlador : MonoBehaviour
     {
         zumbisVivo -= 1;
         Zumbis.text = "Zumbis: " + zumbisVivo;
-        if (zumbisVivo < 0)
-        {
-            zumbisVivo = 0;
-        }
     }
 
 

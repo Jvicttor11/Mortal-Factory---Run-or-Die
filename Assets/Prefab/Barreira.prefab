@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1162613132478460993}
   - component: {fileID: 235738252386901972}
   - component: {fileID: 9063873699446349041}
+  - component: {fileID: 8422861260601598619}
   m_Layer: 0
   m_Name: Barreira
   m_TagString: Untagged
@@ -123,5 +124,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 415a40eb752ee4d44921ce33503a5c2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controlador: {fileID: 0}
-  Zumbis: {fileID: 0}
+  portal: 0
+  QuebrarBarreira: 9
+--- !u!65 &8422861260601598619
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4450305057765516390}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10, y: 2.220446e-16, z: 10.000001}
+  m_Center: {x: 0, y: -0.24, z: 0}

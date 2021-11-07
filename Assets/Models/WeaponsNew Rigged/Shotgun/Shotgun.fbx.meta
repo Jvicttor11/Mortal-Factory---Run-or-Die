@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 281765e845c59f84282b2e601764f781
 ModelImporter:
-  serializedVersion: 25
+  serializedVersion: 20200
   internalIDToNameTable:
   - first:
       74: -623603649343465320
@@ -30,7 +30,7 @@ ModelImporter:
       name: Shotgun_Texture
     second: {fileID: 2100000, guid: 0e59132ac882e3c468d34b4a500005d4, type: 2}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -142,16 +142,14 @@ ModelImporter:
       - time: 0.20949244
         functionName: PlayLoadSfxShotgun
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 539fb136a4cc7234db6c8c9f242037b3,
-          type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: 539fb136a4cc7234db6c8c9f242037b3, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.46166348
         functionName: AddShotgunAmmo
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 539fb136a4cc7234db6c8c9f242037b3,
-          type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: 539fb136a4cc7234db6c8c9f242037b3, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
@@ -187,24 +185,21 @@ ModelImporter:
       - time: 0.99362165
         functionName: SetReloadingStateFalse
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 539fb136a4cc7234db6c8c9f242037b3,
-          type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: 539fb136a4cc7234db6c8c9f242037b3, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.5183656
         functionName: PlayReloadSfxShotgun
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 539fb136a4cc7234db6c8c9f242037b3,
-          type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: 539fb136a4cc7234db6c8c9f242037b3, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.99009943
         functionName: SetReloadingStateFalse
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 539fb136a4cc7234db6c8c9f242037b3,
-          type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: 539fb136a4cc7234db6c8c9f242037b3, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
@@ -240,16 +235,14 @@ ModelImporter:
       - time: 0.16150415
         functionName: PlayReloadSfxShotgun
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 539fb136a4cc7234db6c8c9f242037b3,
-          type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: 539fb136a4cc7234db6c8c9f242037b3, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.9851734
         functionName: SetReloadingStateFalse
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 539fb136a4cc7234db6c8c9f242037b3,
-          type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: 539fb136a4cc7234db6c8c9f242037b3, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
@@ -264,15 +257,18 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
     skinWeightsMode: 0
     maxBonesPerVertex: 4
@@ -282,6 +278,9 @@ ModelImporter:
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
@@ -294,7 +293,6 @@ ModelImporter:
     normalSmoothingSource: 0
   referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
     serializedVersion: 3
     human: []
@@ -312,8 +310,11 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
   additionalBone: 0
   userData: 
   assetBundleName: 

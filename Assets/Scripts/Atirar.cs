@@ -52,9 +52,8 @@ public class Atirar : MonoBehaviour
 
     void Start()
     {
-  
+        armaAtual = armaInicial;
         anim = GetComponent<Animator>();
-        //
         for (int x = 0; x < armas.Length; x++)
         {
             armas[x].objetoArma.SetActive(false);
@@ -64,21 +63,55 @@ public class Atirar : MonoBehaviour
             armas[x].Miras.corMira.a = 1;
 
         }
+        StartCoroutine(Aguardar(2));
         if (armaInicial > armas.Length - 1)
         {
             armaInicial = armas.Length - 1;
         }
-        armas[armaInicial].objetoArma.SetActive(true);
+
         armas[armaInicial].lugarParticula.SetActive(true);
-        armaAtual = armaInicial;
+        
         emissorSom = GetComponent<AudioSource>();
         recarregando = atirando = false;
     }
 
     void Update()
     {
+        var vertical = Input.GetAxis("Vertical");
+        var horizontal = Input.GetAxis("Horizontal");
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
 
+            Camera camera = armas[armaAtual].objetoArma.GetComponentInParent<Camera>();
 
+            if (armas[armaAtual].objetoArma.GetComponent<Animator>().GetBool("Aim"))
+            {
+                camera.fieldOfView = 60;
+                armas[armaAtual].objetoArma.GetComponent<Animator>().SetBool("Aim", false);
+            }
+            else
+            {
+                camera.fieldOfView = 50;
+                armas[armaAtual].objetoArma.GetComponent<Animator>().SetBool("Aim", true);
+            }
+        }
+
+        if (Input.GetKey(KeyCode.Tab))
+        {
+ 
+           armas[armaAtual].objetoArma.GetComponent<Animator>().SetBool("Use", true);
+
+        }
+        else
+        {
+            armas[armaAtual].objetoArma.GetComponent<Animator>().SetBool("Use", false);
+
+        }
+
+        anim.SetFloat("Horizontal", horizontal);
+        anim.SetFloat("Vertical", vertical);
+      
+       
         //UI
         BalasExtra.text = "Balas Extra: " + armas[armaAtual].balasExtra;
         BalasPente.text = "Balas No Pente: " + armas[armaAtual].balasNoPente;
@@ -106,38 +139,42 @@ public class Atirar : MonoBehaviour
         //atirar
         if (Input.GetMouseButtonDown(0) && armas[armaAtual].balasNoPente > 0 && recarregando == false && atirando == false)
         {
-            anim.SetInteger("status", 1);
+            armas[armaAtual].objetoArma.GetComponent<Animator>().SetBool("Use", false);
+            armas[armaAtual].objetoArma.GetComponent<Animator>().Play("Shot");
+
             atirando = true;
             StartCoroutine(TempoTiro(armas[armaAtual].tempoPorTiro));
             emissorSom.clip = armas[armaAtual].somTiro;
-            emissorSom.PlayOneShot(emissorSom.clip);
+            //emissorSom.PlayOneShot(emissorSom.clip);
+            armas[armaAtual].objetoArma.GetComponent<Arma>().atirar();
             armas[armaAtual].balasNoPente--;
             GameObject balaTemp = Instantiate(armas[armaAtual].particulaFogo, armas[armaAtual].lugarParticula.transform.position, transform.rotation) as GameObject;
             Destroy(balaTemp, 0.5f);
 
 
-            Debug.DrawRay(transform.position, transform.forward, Color.green, 10, false);
+           // Debug.DrawRay(transform.position, transform.forward, Color.green, 10, false);
             RaycastHit pontoDeColisao;
             if (Physics.Raycast(transform.position, transform.forward, out pontoDeColisao))
             {
                 if (pontoDeColisao.transform.gameObject.tag == TagInimigo)
                 {
                     Debug.Log("Acertou o inimigo");
-                    pontoDeColisao.transform.gameObject.GetComponent<Inimigo>().vida -= armas[armaAtual].danoPorTiro;
+                    pontoDeColisao.transform.gameObject.GetComponent<Inimigo>().SofrerDano(armas[armaAtual].danoPorTiro);
                 }
             }
         }
         else
         {
-            anim.SetInteger("status", 0);
+           // anim.SetInteger("status", 0);
         }
 
         //recarregar
         if (Input.GetKeyDown(botaoRecarregar) && recarregando == false && atirando == false && (armas[armaAtual].balasNoPente < armas[armaAtual].balasPorPente) && (armas[armaAtual].balasExtra > 0))
         {
-            anim.SetInteger("status", 2);
+            armas[armaAtual].objetoArma.GetComponent<Animator>().Play("Reload");
             emissorSom.clip = armas[armaAtual].somRecarga;
-            emissorSom.PlayOneShot(emissorSom.clip);
+            armas[armaAtual].objetoArma.GetComponent<Arma>().recarregar();
+            //emissorSom.PlayOneShot(emissorSom.clip);
             int todasAsBalas = armas[armaAtual].balasNoPente + armas[armaAtual].balasExtra;
             if (todasAsBalas >= armas[armaAtual].balasPorPente)
             {
@@ -195,18 +232,13 @@ public class Atirar : MonoBehaviour
         }
         armas[armaAtual].objetoArma.SetActive(true);
         armas[armaAtual].lugarParticula.SetActive(true);
-      /*  if (armas[armaAtual].Miras.ativarLaser == true)
-        {
-            linhaDoLaser.material.color = armas[armaAtual].Miras.corLaser;
-            linhaDoLaser.enabled = true;
-            luzColisao.SetActive(true);
-            luzColisao.GetComponent<Light>().color = armas[armaAtual].Miras.corLaser;
-        }
-        else
-        {*/
-            linhaDoLaser.enabled = false;
-            luzColisao.SetActive(false);
-       // }
+    }
+
+
+    IEnumerator Aguardar(float tempoAEsperar)
+    {
+        yield return new WaitForSeconds(tempoAEsperar);
+
     }
 
     void OnGUI()
