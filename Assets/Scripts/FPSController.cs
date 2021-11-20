@@ -4,7 +4,8 @@ using UnityEngine.UI;
 using System;
 
 [RequireComponent(typeof(CharacterController))]
-public class FPSController : MonoBehaviour {
+public class FPSController : MonoBehaviour
+{
 
     public float speed = 6.0f;
     public float vida = 100;
@@ -20,57 +21,80 @@ public class FPSController : MonoBehaviour {
     private bool sofrendoDano = false;
 
     public Text Vida;
-
-    void Start () {
+    private Vector3 currentAngle;
+    public Vector3 targetAngle;
+    void Start()
+    {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         transform.tag = "Player";
-        cameraFPS = transform.gameObject;      
+        cameraFPS = transform.gameObject;
         //cameraFPS.transform.localPosition = new Vector3 (9.25f, 0.1f, 17);
-       cameraFPS.transform.localRotation = Quaternion.identity;
-        controller = GetComponent<CharacterController> ();
+        // cameraFPS.transform.localRotation = Quaternion.identity;
+        controller = GetComponent<CharacterController>();
     }
 
- void Update () {
+    void Update()
+    {
 
-        if(vida > 0)
-            Vida.text = "Vida: " + vida;
-        else
+        if (vida < 0)
+        {
+
             Vida.text = "Vida: " + vida + " Você Morreu... ";
 
-        Vector3 direcaoFrente = new Vector3 (cameraFPS.transform.forward.x, 0, cameraFPS.transform.forward.z);
-        Vector3 direcaoLado = new Vector3 (cameraFPS.transform.right.x, 0, cameraFPS.transform.right.z);
-        direcaoFrente.Normalize ();
-        direcaoLado.Normalize ();
-        direcaoFrente = direcaoFrente * Input.GetAxis ("Vertical");
-        direcaoLado = direcaoLado * Input.GetAxis ("Horizontal");
-        Vector3 direcFinal = direcaoFrente + direcaoLado;
-        if (direcFinal.sqrMagnitude > 1) {
-            if(!AudioAndar.isPlaying)
-            AudioAndar.Play();
-            direcFinal.Normalize ();
- }
-  
- if (controller.isGrounded) {
- moveDirection = new Vector3 (direcFinal.x, 0, direcFinal.z);
- moveDirection *= speed;
- if (Input.GetButton ("Jump")) {
-                if (!AudioPular.isPlaying)
+            float speed = 0.1f;
+
+            Quaternion target = Quaternion.Euler(-66, cameraFPS.transform.rotation.y, cameraFPS.transform.rotation.z);
+
+            cameraFPS.transform.rotation = Quaternion.Lerp(cameraFPS.transform.rotation, target, Time.time * speed);
+
+
+        }
+        else
+        {
+
+            Vida.text = "Vida: " + vida;
+
+
+
+            Vector3 direcaoFrente = new Vector3(cameraFPS.transform.forward.x, 0, cameraFPS.transform.forward.z);
+            Vector3 direcaoLado = new Vector3(cameraFPS.transform.right.x, 0, cameraFPS.transform.right.z);
+            direcaoFrente.Normalize();
+            direcaoLado.Normalize();
+            direcaoFrente = direcaoFrente * Input.GetAxis("Vertical");
+            direcaoLado = direcaoLado * Input.GetAxis("Horizontal");
+            Vector3 direcFinal = direcaoFrente + direcaoLado;
+            if (direcFinal.sqrMagnitude > 1)
+            {
+                if (!AudioAndar.isPlaying)
+                    AudioAndar.Play();
+                direcFinal.Normalize();
+            }
+
+            if (controller.isGrounded)
+            {
+                moveDirection = new Vector3(direcFinal.x, 0, direcFinal.z);
+                moveDirection *= speed;
+                if (Input.GetButton("Jump"))
                 {
-                    AudioAndar.Stop();
-                    AudioPular.Play();
+                    if (!AudioPular.isPlaying)
+                    {
+                        AudioAndar.Stop();
+                        AudioPular.Play();
+                    }
+                    moveDirection.y = jump;
                 }
-                moveDirection.y = jump;
- }
- }
+            }
 
- moveDirection.y -= 20.0f * Time.deltaTime;
- controller.Move (moveDirection * Time.deltaTime);
+            moveDirection.y -= 20.0f * Time.deltaTime;
+            controller.Move(moveDirection * Time.deltaTime);
 
-        CameraPrimeiraPessoa ();
- }
+            CameraPrimeiraPessoa();
+        }
+    }
 
-    public void dano(int dano){
+    public void dano(int dano)
+    {
         if (!sofrendoDano)
         {
             sofrendoDano = true;
@@ -78,36 +102,40 @@ public class FPSController : MonoBehaviour {
             Aguardar(2);
             sofrendoDano = false;
         }
-        
+
         vida -= dano;
     }
 
     IEnumerator Aguardar(float tempoAEsperar)
     {
         yield return new WaitForSeconds(tempoAEsperar);
-      
+
     }
 
-    void CameraPrimeiraPessoa(){
- rotacaoX += Input.GetAxis ("Mouse X") * 10.0f;
- rotacaoY += Input.GetAxis ("Mouse Y") * 10.0f;
- rotacaoX = ClampAngleFPS (rotacaoX, -360, 360);
- rotacaoY = ClampAngleFPS (rotacaoY, -80, 80);
- Quaternion xQuaternion = Quaternion.AngleAxis (rotacaoX, Vector3.up);
- Quaternion yQuaternion = Quaternion.AngleAxis (rotacaoY, -Vector3.right);
- Quaternion rotacFinal = Quaternion.identity * xQuaternion * yQuaternion;
- cameraFPS.transform.localRotation = Quaternion.Lerp (cameraFPS.transform.localRotation, rotacFinal, Time.deltaTime * 10.0f);
- }
+    void CameraPrimeiraPessoa()
+    {
+        rotacaoX += Input.GetAxis("Mouse X") * 10.0f;
+        rotacaoY += Input.GetAxis("Mouse Y") * 10.0f;
+        rotacaoX = ClampAngleFPS(rotacaoX, -360, 360);
+        rotacaoY = ClampAngleFPS(rotacaoY, -80, 80);
+        Quaternion xQuaternion = Quaternion.AngleAxis(rotacaoX, Vector3.up);
+        Quaternion yQuaternion = Quaternion.AngleAxis(rotacaoY, -Vector3.right);
+        Quaternion rotacFinal = Quaternion.identity * xQuaternion * yQuaternion;
+        cameraFPS.transform.localRotation = Quaternion.Lerp(cameraFPS.transform.localRotation, rotacFinal, Time.deltaTime * 10.0f);
+    }
 
- float ClampAngleFPS(float angulo, float min, float max){
- if (angulo < -360) {
- angulo += 360;
- }
- if (angulo > 360) {
- angulo -= 360;
- }
- return Mathf.Clamp (angulo, min, max);
- }
+    float ClampAngleFPS(float angulo, float min, float max)
+    {
+        if (angulo < -360)
+        {
+            angulo += 360;
+        }
+        if (angulo > 360)
+        {
+            angulo -= 360;
+        }
+        return Mathf.Clamp(angulo, min, max);
+    }
 
 
 

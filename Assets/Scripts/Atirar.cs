@@ -75,6 +75,14 @@ public class Atirar : MonoBehaviour
         recarregando = atirando = false;
     }
 
+
+    private float zoomTime = 0.52f;
+    float zoomDeltaTime = 0.0f;
+    bool isZooming = false;
+    float targetFOV;
+    float origimFOV;
+
+
     void Update()
     {
         var vertical = Input.GetAxis("Vertical");
@@ -86,14 +94,56 @@ public class Atirar : MonoBehaviour
 
             if (armas[armaAtual].objetoArma.GetComponent<Animator>().GetBool("Aim"))
             {
-                camera.fieldOfView = 60;
+
+                isZooming = true;
+                targetFOV = 60.0f;
+                origimFOV = 50.0f;
+                zoomDeltaTime = 0.0f;
+
+                //camera.fieldOfView = 60;
                 armas[armaAtual].objetoArma.GetComponent<Animator>().SetBool("Aim", false);
             }
             else
             {
-                camera.fieldOfView = 50;
+
+                isZooming = true;
+                targetFOV = 50.0f;
+                origimFOV = 60.0f;
+                zoomDeltaTime = 0.0f;
+
+
+                //camera.fieldOfView = 50;
                 armas[armaAtual].objetoArma.GetComponent<Animator>().SetBool("Aim", true);
             }
+        }
+
+        if(isZooming)
+        {
+            Camera camera = armas[armaAtual].objetoArma.GetComponentInParent<Camera>();
+            float fov = Mathf.Lerp(origimFOV, targetFOV, zoomDeltaTime / zoomTime);
+            camera.fieldOfView = fov;
+
+            if (origimFOV < targetFOV)
+            {
+                if (fov >= (targetFOV - 0.1f))
+                {
+                    camera.fieldOfView = targetFOV;
+                    zoomDeltaTime = 0.0f;
+                    isZooming = false;
+                }
+            }
+            else
+            {
+                if (fov <= (targetFOV - 0.1f))
+                {
+                    camera.fieldOfView = targetFOV;
+                    zoomDeltaTime = 0.0f;
+                    isZooming = false;
+                }
+            }
+
+            zoomDeltaTime += Time.deltaTime;
+
         }
 
         if (Input.GetKey(KeyCode.Tab))

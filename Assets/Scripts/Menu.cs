@@ -8,7 +8,7 @@ public class Menu : MonoBehaviour
 
     public void OpenMenu()
     {//Chama no Onclick do botao de menu
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("TelaInicial");
 
     }
 
@@ -16,5 +16,16 @@ public class Menu : MonoBehaviour
     {//Chama no Onclick do botao de jogar
 
         SceneManager.LoadScene("Fase1");
+    }
+
+    public void HowtoPlay()
+    {//Chama no Onclick do botao de menu
+        SceneManager.LoadScene("Como Jogar");
+
+    }
+    public void Quit()
+    {
+        Application.Quit();
+
     }
 }

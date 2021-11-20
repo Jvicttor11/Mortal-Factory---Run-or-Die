@@ -15,10 +15,11 @@ public class Inimigo : MonoBehaviour
     public string TagInimigo = "Player";
     public AudioSource AudioSofrerDano;
     public AudioSource AudioParado;
+    public AudioClip takeHitClip;
 
     private void Start()
     {
-        AudioSofrerDano.Play();
+       // AudioSofrerDano.Play();
         podeAtacar = true;
         player = GameObject.FindWithTag("Player");
         navMesh = GetComponent<NavMeshAgent>();
@@ -83,7 +84,9 @@ public class Inimigo : MonoBehaviour
     public void SofrerDano(int dano)
     {
         Debug.Log("Atingido");
-        AudioSofrerDano.Play();
+        //AudioSofrerDano.Play();
+        AudioSofrerDano.PlayOneShot(takeHitClip, 1.0f);
+        //AudioParado.PlayOneShot(takeHitClip);
         this.vida -= dano;
     }
 
