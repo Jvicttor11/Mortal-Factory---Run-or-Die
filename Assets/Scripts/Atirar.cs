@@ -16,7 +16,7 @@ public class Arma919
     [HideInInspector]
     public int balasExtra, balasNoPente;
     public int danoPorTiro = 40;
-    [Range(65, 500)]
+    [Range(30, 500)]
     public int numeroDeBalas = 240;
     [Range(1, 50)]
     public int balasPorPente = 30;

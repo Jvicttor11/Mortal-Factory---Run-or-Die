@@ -25,8 +25,7 @@ public class FPSController : MonoBehaviour
     public Vector3 targetAngle;
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        
         transform.tag = "Player";
         cameraFPS = transform.gameObject;
         //cameraFPS.transform.localPosition = new Vector3 (9.25f, 0.1f, 17);
