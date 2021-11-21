@@ -15,7 +15,7 @@ public class Menu : MonoBehaviour
     public void OpenGame()
     {//Chama no Onclick do botao de jogar
 
-        SceneManager.LoadScene("Fase1");
+        SceneManager.LoadScene("Introducao");
     }
 
     public void HowtoPlay()
