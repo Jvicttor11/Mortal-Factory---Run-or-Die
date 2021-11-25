@@ -7,6 +7,7 @@ TagManager:
   - inimigo
   - spawnInimigo
   - SpawnFase1
+  - Chefao
   layers:
   - Default
   - TransparentFX

@@ -56,6 +56,7 @@ public class Atirar : MonoBehaviour
         anim = GetComponent<Animator>();
         for (int x = 0; x < armas.Length; x++)
         {
+          
             armas[x].objetoArma.SetActive(false);
             armas[x].lugarParticula.SetActive(false);
             armas[x].balasExtra = armas[x].numeroDeBalas - armas[x].balasPorPente;
@@ -68,9 +69,9 @@ public class Atirar : MonoBehaviour
         {
             armaInicial = armas.Length - 1;
         }
-
+        armas[armaInicial].objetoArma.SetActive(true);
         armas[armaInicial].lugarParticula.SetActive(true);
-        
+        armaAtual = armaInicial;        
         emissorSom = GetComponent<AudioSource>();
         recarregando = atirando = false;
     }

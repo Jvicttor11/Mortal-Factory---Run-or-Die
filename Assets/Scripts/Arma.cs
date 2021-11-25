@@ -16,10 +16,9 @@ public class Arma : MonoBehaviour
     {
         for (var i = 0; i < AudioRecarregar.Length; i++)
         {
-            Debug.Log("Musica: " + i);
+
             StartCoroutine(Aguardar(AudioRecarregar[i].time));
-                
-            
+   
         }
 
     }

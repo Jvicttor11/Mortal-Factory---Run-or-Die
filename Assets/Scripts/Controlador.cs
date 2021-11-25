@@ -10,7 +10,9 @@ public class Controlador : MonoBehaviour
     public float zumbisVivo;
     public Text Zumbis;
     public int faseAtual = 0;
-
+    public GameObject TelaFinal;
+    public GameObject TelaPause;
+    public GameObject TelaGameOver;
 
     void Awake()
     {
@@ -30,8 +32,9 @@ public class Controlador : MonoBehaviour
         zumbisVivo = 0;
     }
 
-   public void matarZombie()
+   public void matarZombie(GameObject zumbi)
     {
+
         zumbisVivo -= 1;
         Zumbis.text = "Zumbis: " + zumbisVivo;
         if (zumbisVivo < 0)
@@ -52,6 +55,22 @@ public class Controlador : MonoBehaviour
         
         zumbisVivo += qtd;
         Zumbis.text = "Zumbis: " + zumbisVivo;
+    }
+
+    public void EndGame()
+    {
+        TelaFinal.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Time.timeScale = 0;
+    }
+
+    public void Morte()
+    {
+        TelaGameOver.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+      
     }
 
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class spawnInimigo : MonoBehaviour
 {
 
-    public GameObject inimigo;
+    public GameObject[] inimigos;
     public Transform[] SpawnsFases;
     private Transform[] objects;
     public int[] QtdInimigosFase;
@@ -14,21 +14,20 @@ public class spawnInimigo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         faseAtual = Controlador.gm.faseAtual;
-        CarregarSpawns();
-        Aguardar(2);
-        //Debug.Log(" Quantidade de Inimidos: " + QtdInimigosFase[Controlador.gm.faseAtual]);
-        for (var i = 0; i < QtdInimigosFase[Controlador.gm.faseAtual]; i++)
-        {
-            int posicao = Random.Range(0, objects.Length);
-            Controlador.gm.instanciarZumbie(inimigo, objects[posicao]);
-        }
+
+        StartCoroutine(CarregarSpawns(0.5f));       
     }
 
-    public void CarregarSpawns()
+    IEnumerator CarregarSpawns(float tempoAEsperar)
     {
-        objects = SpawnsFases[Controlador.gm.faseAtual].GetComponentsInChildren<Transform>();
+        objects = SpawnsFases[faseAtual].GetComponentsInChildren<Transform>();
+        yield return new WaitForSeconds(tempoAEsperar);
+        CriaZumbies(objects);
     }
+
+
 
     void Update()
     {
@@ -38,9 +37,17 @@ public class spawnInimigo : MonoBehaviour
         }
     }
 
-    IEnumerator Aguardar(float tempoAEsperar)
+    void CriaZumbies(Transform[] spawns)
     {
-        yield return new WaitForSeconds(tempoAEsperar);
+        for (var i = 0; i < QtdInimigosFase[Controlador.gm.faseAtual]; i++)
+        {
+            int zumbie = Random.Range(1, inimigos.Length);
+            Debug.Log("Fase atual: " + Controlador.gm.faseAtual);
+            Debug.Log("Zombie Sorteado: " + zumbie);
+            int posicao = Random.Range(0, spawns.Length);
+            Controlador.gm.instanciarZumbie(inimigos[zumbie], spawns[posicao]);
+        }
 
     }
+
 }

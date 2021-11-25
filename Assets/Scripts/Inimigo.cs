@@ -16,6 +16,10 @@ public class Inimigo : MonoBehaviour
     public AudioSource AudioSofrerDano;
     public AudioSource AudioParado;
     public AudioClip takeHitClip;
+    public bool chefao = false;
+    public int dano=10;
+
+
 
     private void Start()
     {
@@ -24,6 +28,7 @@ public class Inimigo : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         navMesh = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
+        navMesh.destination = new Vector3(transform.position.x+Random.Range(0,5), transform.position.y + Random.Range(0, 5), transform.position.z+Random.Range(0, 5));
     }
 
     void Update()
@@ -38,18 +43,21 @@ public class Inimigo : MonoBehaviour
         {
             anim.SetBool("attack", false);
         }
-        
-        if (Vector3.Distance(transform.position, player.transform.position) < 10f && vida > 0)
+
+        if (Vector3.Distance(transform.position, player.transform.position) < 15f && vida > 0)
         {
             navMesh.destination = player.transform.position;
             anim.SetBool("parado", false);
-            anim.SetBool("correndo",true);
+            anim.SetBool("correndo", true);
         }
-        else if(vida > 0) {
+        else if (vida > 0)
+        {
+
             anim.SetBool("correndo", false);
             anim.SetBool("parado", true);
 
         }
+
 
         if (vida <= 0)
         {
@@ -60,9 +68,7 @@ public class Inimigo : MonoBehaviour
                 anim.SetBool("parado", false);
                 Morrer();
                 chamouMorte = true;
-                StartCoroutine("Morrer");
-                
-
+                StartCoroutine("Morrer");                    
             }
         }
       
@@ -95,21 +101,32 @@ public class Inimigo : MonoBehaviour
     IEnumerator Morrer()
     {
         Debug.Log("Matando no inimigo");
-        Controlador.gm.matarZombie();
+        Controlador.gm.matarZombie(gameObject);
         anim.SetBool("morto", true);
-        yield return new WaitForSeconds(20);
-       
-      
+        if (chefao)
+        {
+            Debug.Log("Chefão Morreu");
+            yield return new WaitForSeconds(5);
+            Controlador.gm.EndGame();
+        }
+        else
+            yield return new WaitForSeconds(20);
         Destroy(gameObject);
     }
 
     IEnumerator AtacarPlayer()
     {
         podeAtacar = false;
+        if(chefao)
+        if (Vector3.Distance(transform.position, player.transform.position) < 15f && vida > 0)
+        {
+            player.GetComponent<FPSController>().dano(dano);
+
+        }
 
         if (Vector3.Distance(transform.position, player.transform.position) < 10f && vida > 0)
         {
-            player.GetComponent<FPSController>().dano(5);
+            player.GetComponent<FPSController>().dano(dano);
 
         }
         
